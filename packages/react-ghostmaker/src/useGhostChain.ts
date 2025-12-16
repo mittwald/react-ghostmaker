@@ -84,6 +84,7 @@ const useGhostChainItem = <T>(
 
   const query = useSuspenseQuery<UseQueryReturnType<T>>({
     ...options,
+
     queryKey,
     queryFn: async (ctx) => {
       const targetFnWithContext = ghostFnContext.bind({ query: ctx }, targetFn);
@@ -105,29 +106,26 @@ const targetHashes = new Map<string, number>();
 const useTargetAutoInvalidate = (target: object, queryKey: QueryKey) => {
   const queryClient = useQueryClient();
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({
-      queryKey,
-    });
-
-  const targetHash = hashObject(target);
-  const joinedQueryKey = queryKey.join(".");
-  const prevTargetHash = targetHashes.get(joinedQueryKey);
-
-  const needsRefresh =
-    prevTargetHash !== undefined && prevTargetHash !== targetHash;
-
-  targetHashes.set(joinedQueryKey, targetHash);
-
   const onTargetChangeEvent = useEffectEvent(() => {
+    const joinedQueryKey = queryKey.join(".");
+    const targetHash = hashObject(target);
+    const prevTargetHash = targetHashes.get(joinedQueryKey);
+
+    const needsRefresh =
+      prevTargetHash !== undefined && prevTargetHash !== targetHash;
+
+    targetHashes.set(joinedQueryKey, targetHash);
+
     if (needsRefresh) {
-      invalidate();
+      queryClient.resetQueries({
+        queryKey,
+      });
     }
   });
 
   useEffect(() => {
     onTargetChangeEvent();
-  }, [needsRefresh]);
+  }, [target]);
 };
 
 /** @internal */
