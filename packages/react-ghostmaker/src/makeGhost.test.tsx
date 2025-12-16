@@ -14,9 +14,11 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { invalidateGhosts } from "./invalidate";
 import { makeGhost } from "./makeGhost";
+import { cleanupTargetHashes } from "./useGhostChain";
 
 beforeEach(() => {
   vitest.useFakeTimers();
+  cleanupTargetHashes();
 });
 
 afterEach(() => {

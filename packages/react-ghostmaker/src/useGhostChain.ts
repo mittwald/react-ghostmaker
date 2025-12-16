@@ -1,5 +1,5 @@
 import is, { assert } from "@sindresorhus/is";
-import { useEffect, useEffectEvent, useMemo, useRef } from "react";
+import { useEffect, useEffectEvent, useMemo } from "react";
 import {
   transformFnProp,
   type GhostChain,
@@ -100,6 +100,8 @@ const useGhostChainItem = <T>(
   return query.data.result;
 };
 
+const targetHashes = new Map<string, number>();
+
 const useTargetAutoInvalidate = (target: object, queryKey: QueryKey) => {
   const queryClient = useQueryClient();
 
@@ -109,15 +111,13 @@ const useTargetAutoInvalidate = (target: object, queryKey: QueryKey) => {
     });
 
   const targetHash = hashObject(target);
-  const prevTargetHash = useRef(targetHash);
   const joinedQueryKey = queryKey.join(".");
-  const prevQueryId = useRef(joinedQueryKey);
+  const prevTargetHash = targetHashes.get(joinedQueryKey);
 
   const needsRefresh =
-    prevQueryId.current === joinedQueryKey &&
-    prevTargetHash.current !== targetHash;
-  prevTargetHash.current = targetHash;
-  prevQueryId.current = joinedQueryKey;
+    prevTargetHash !== undefined && prevTargetHash !== targetHash;
+
+  targetHashes.set(joinedQueryKey, targetHash);
 
   const onTargetChangeEvent = useEffectEvent(() => {
     if (needsRefresh) {
@@ -128,4 +128,9 @@ const useTargetAutoInvalidate = (target: object, queryKey: QueryKey) => {
   useEffect(() => {
     onTargetChangeEvent();
   }, [needsRefresh]);
+};
+
+/** @internal */
+export const cleanupTargetHashes = () => {
+  targetHashes.clear();
 };
