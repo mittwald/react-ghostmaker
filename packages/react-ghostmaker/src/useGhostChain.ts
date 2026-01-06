@@ -117,7 +117,7 @@ const useTargetAutoInvalidate = (target: object, queryKey: QueryKey) => {
     targetHashes.set(joinedQueryKey, targetHash);
 
     if (needsRefresh) {
-      queryClient.resetQueries({
+      queryClient.invalidateQueries({
         queryKey,
       });
     }
