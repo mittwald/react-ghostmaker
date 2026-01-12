@@ -12,14 +12,17 @@ export interface UseQueryReturnType<T> {
   result: T;
 }
 
-export type useGhostOptions<T = unknown> = Omit<
+export type UseGhostOptions<T = unknown> = Omit<
   UseQueryOptions<UseQueryReturnType<T>>,
   "queryKey" | "queryFn"
 >;
 
+/** @deprecated Use `UseGhostOptions<unknown>` instead. */
+export type useGhostOptions = UseGhostOptions<unknown>;
+
 export interface ReactGhostMethods<T> extends Promise<T> {
-  useGhost: (options?: useGhostOptions) => UseGhostReturn<T>;
-  use: (options?: useGhostOptions) => T;
+  useGhost: (options?: UseGhostOptions<T>) => UseGhostReturn<T>;
+  use: (options?: UseGhostOptions<T>) => T;
   render: (transform?: (item: T) => ReactNode) => ReactNode;
   transform: <U, U2 = U>(
     fn: (item: T extends ReactGhost<infer T2> ? T2 : T) => U2,

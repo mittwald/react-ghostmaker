@@ -6,7 +6,7 @@ import {
   type GhostChainContext,
   type GhostChainItem,
   type QueryKey,
-  type useGhostOptions,
+  type UseGhostOptions,
   type UseGhostReturn,
   type UseQueryReturnType,
 } from "./types";
@@ -19,7 +19,7 @@ import { hashObject } from "./hash";
 export const useGhostChain = <T>(
   target: unknown,
   chain: GhostChain,
-  options?: useGhostOptions,
+  options?: UseGhostOptions<T>,
 ): UseGhostReturn<T> => {
   const queryClient = useQueryClient();
 
@@ -45,7 +45,7 @@ export const useGhostChain = <T>(
 const useGhostChainItem = <T>(
   target: unknown,
   item: GhostChainItem,
-  options: useGhostOptions<T> = {},
+  options: UseGhostOptions<T> = {},
   context: GhostChainContext,
 ): unknown => {
   const { propName, args } = item;
