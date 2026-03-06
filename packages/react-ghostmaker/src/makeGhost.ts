@@ -6,13 +6,13 @@ import {
   type GhostChain,
   type ReactGhost,
   type ReactGhostMethods,
-} from "./types";
-import { useGhostChain } from "./useGhostChain";
-import { RenderComponent } from "./RenderComponent";
-import { resolveGhostChain } from "./resolveGhostChain";
+} from "./types.ts";
+import { useGhostChain } from "./useGhostChain.ts";
+import { RenderComponent } from "./RenderComponent.tsx";
+import { resolveGhostChain } from "./resolveGhostChain.ts";
 import { type QueryClient } from "@tanstack/react-query";
-import { invalidateGhosts } from "./invalidate";
-import { queries } from "./queries";
+import { invalidateGhosts } from "./invalidate.ts";
+import { queries } from "./queries.ts";
 
 type GhostMethodsWithoutPromise<T> = Omit<
   ReactGhostMethods<T>,

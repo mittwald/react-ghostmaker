@@ -1,7 +1,7 @@
 import { expectTypeOf, test } from "vitest";
-import type { Customer, ProjectDetailed } from "./testMocks";
-import { ProjectGhost } from "./testMocks";
-import type { ReactGhost } from "./types";
+import type { Customer, ProjectDetailed } from "./testMocks.ts";
+import { ProjectGhost } from "./testMocks.ts";
+import type { ReactGhost } from "./types.ts";
 
 test("return type is correct", () => {
   const customerNameGhost = ProjectGhost.ofId("Project A")

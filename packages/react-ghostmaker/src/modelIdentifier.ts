@@ -1,4 +1,4 @@
-import type { ModelIdentifier } from "./types";
+import type { ModelIdentifier } from "./types.ts";
 
 export const modelIdentifiers: ModelIdentifier[] = [];
 

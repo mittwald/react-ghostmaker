@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, test } from "vitest";
-import { type MaybeReactGhost } from "./types";
+import { type MaybeReactGhost } from "./types.ts";
 import type { ReactGhost } from "../types";
-import { asGhostProps } from "./asGhost";
+import { asGhostProps } from "./asGhost.ts";
 
 interface ModelA {
   a: string;

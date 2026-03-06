@@ -1,8 +1,8 @@
-export { makeGhost } from "./makeGhost";
-export { registerModelIdentifier } from "./modelIdentifier";
-export { type ReactGhost, UseGhostReturn } from "./types";
-export { getQueryContext, forwardQueryContext } from "./context";
-export { invalidateGhosts } from "./invalidate";
+export { makeGhost } from "./makeGhost.ts";
+export { registerModelIdentifier } from "./modelIdentifier.ts";
+export { type ReactGhost, UseGhostReturn } from "./types.ts";
+export { getQueryContext, forwardQueryContext } from "./context.ts";
+export { invalidateGhosts } from "./invalidate.ts";
 export * from "./maybeGhost";
-export { GhostMakerModel, ghostMakerModel } from "./metaData";
-export { getModelId, getModelName } from "./queries";
+export { GhostMakerModel, ghostMakerModel } from "./metaData.ts";
+export { getModelId, getModelName } from "./queries.ts";

@@ -4,7 +4,7 @@ import type {
   MaybeReactGhost,
   PropsWithFixedUpReactGhosts,
   PropsWithMaybeReactGhosts,
-} from "./types";
+} from "./types.ts";
 
 export function asGhost<T>(maybeGhost: MaybeReactGhost<T>): ReactGhost<T> {
   if (isReactGhost<T>(maybeGhost)) {

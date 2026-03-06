@@ -1,4 +1,4 @@
-import { getMetaData, GhostMakerModel } from "./metaData";
+import { getMetaData, GhostMakerModel } from "./metaData.ts";
 import { expect, test } from "vitest";
 
 @GhostMakerModel({

@@ -1,8 +1,8 @@
 import is from "@sindresorhus/is";
-import type { GhostChain, GhostChainItem, QueryKey } from "./types";
-import { hashObject } from "./hash";
-import { getMetaData } from "./metaData";
-import { modelIdentifiers } from "./modelIdentifier";
+import type { GhostChain, GhostChainItem, QueryKey } from "./types.ts";
+import { hashObject } from "./hash.ts";
+import { getMetaData } from "./metaData.ts";
+import { modelIdentifiers } from "./modelIdentifier.ts";
 
 export const getModelName = (something: unknown) => {
   return getMetaData(something)?.name;

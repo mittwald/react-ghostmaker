@@ -5,7 +5,7 @@ import {
   type AnyFunction,
   type GhostChain,
   type GhostChainItem,
-} from "./types";
+} from "./types.ts";
 
 const resolveGhostChainItem = async (target: unknown, item: GhostChainItem) => {
   const { propName, args } = item;

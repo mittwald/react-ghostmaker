@@ -9,12 +9,12 @@ import {
   type UseGhostOptions,
   type UseGhostReturn,
   type UseQueryReturnType,
-} from "./types";
+} from "./types.ts";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { queries } from "./queries";
-import { ghostFnContext } from "./context";
-import { invalidateGhosts } from "./invalidate";
-import { hashObject } from "./hash";
+import { queries } from "./queries.ts";
+import { ghostFnContext } from "./context.ts";
+import { invalidateGhosts } from "./invalidate.ts";
+import { hashObject } from "./hash.ts";
 
 export const useGhostChain = <T>(
   target: unknown,

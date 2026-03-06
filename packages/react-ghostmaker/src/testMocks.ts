@@ -1,7 +1,7 @@
 import { beforeEach, vitest } from "vitest";
 import { getQueryContext, makeGhost } from ".";
 import type { QueryFunctionContext } from "@tanstack/react-query";
-import { GhostMakerModel } from "./metaData";
+import { GhostMakerModel } from "./metaData.ts";
 
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 200));
 

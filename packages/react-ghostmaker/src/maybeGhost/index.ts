@@ -1,2 +1,2 @@
-export * from "./asGhost";
-export * from "./types";
+export * from "./asGhost.ts";
+export * from "./types.ts";

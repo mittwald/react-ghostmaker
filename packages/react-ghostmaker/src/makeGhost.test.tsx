@@ -10,11 +10,11 @@ import {
   customerMocks,
   getCustomerNameGhostIds,
   projectMocks,
-} from "./testMocks";
+} from "./testMocks.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { invalidateGhosts } from "./invalidate";
-import { makeGhost } from "./makeGhost";
-import { cleanupTargetHashes } from "./useGhostChain";
+import { invalidateGhosts } from "./invalidate.ts";
+import { makeGhost } from "./makeGhost.ts";
+import { cleanupTargetHashes } from "./useGhostChain.ts";
 
 beforeEach(() => {
   vitest.useFakeTimers();

@@ -8,6 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "allowArbitraryExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "module": "es6",
     "moduleResolution": "bundler",
     "outDir": "dist/esm",

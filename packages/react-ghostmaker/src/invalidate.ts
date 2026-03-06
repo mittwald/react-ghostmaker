@@ -1,5 +1,5 @@
 import { type QueryClient } from "@tanstack/react-query";
-import type { QueryKey } from "./types";
+import type { QueryKey } from "./types.ts";
 
 export async function invalidateGhosts(
   queryClient: QueryClient,
