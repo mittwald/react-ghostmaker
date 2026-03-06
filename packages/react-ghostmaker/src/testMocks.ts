@@ -1,5 +1,5 @@
 import { beforeEach, vitest } from "vitest";
-import { getQueryContext, makeGhost } from ".";
+import { getQueryContext, makeGhost } from "./index.ts";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 import { GhostMakerModel } from "./metaData.ts";
 

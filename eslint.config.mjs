@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import importPlugin from "eslint-plugin-import";
 
 export default tseslint.config(
   {
@@ -15,6 +16,11 @@ export default tseslint.config(
       "**/.vitest",
     ],
   },
+  importPlugin.flatConfigs.recommended,
+  eslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
   {
     rules: {
       "linebreak-style": ["error", "unix"],
@@ -40,10 +46,22 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
+      "import/no-unresolved": ["off"],
     },
   },
-  eslint.configs.recommended,
-  eslintPluginPrettierRecommended,
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.stylistic,
+  {
+    files: ["!examples/**/*"],
+    rules: {
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          ignorePackages: true,
+          ts: "always",
+          tsx: "always",
+          js: "always",
+        },
+      ],
+    },
+  },
 );

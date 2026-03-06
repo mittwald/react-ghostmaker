@@ -1,4 +1,4 @@
-import { asGhostProps } from "../maybeGhost";
+import { asGhostProps } from "../maybeGhost/index.ts";
 import { isReactGhost } from "../types.ts";
 import { expect, test } from "vitest";
 
