@@ -1,5 +1,5 @@
-import { makeGhost } from "../makeGhost";
-import { isReactGhost, type ReactGhost } from "../types";
+import { makeGhost } from "../makeGhost.ts";
+import { isReactGhost, type ReactGhost } from "../types.ts";
 import type {
   MaybeReactGhost,
   PropsWithFixedUpReactGhosts,

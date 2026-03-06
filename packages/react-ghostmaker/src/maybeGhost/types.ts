@@ -1,4 +1,4 @@
-import { type OrOptional, type ReactGhost } from "../types";
+import { type OrOptional, type ReactGhost } from "../types.ts";
 
 export type MaybeReactGhost<T> =
   T extends ReactGhost<infer U> ? ReactGhost<U> | U : T | ReactGhost<T>;

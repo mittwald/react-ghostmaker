@@ -1,5 +1,5 @@
 import { asGhostProps } from "../maybeGhost";
-import { isReactGhost } from "../types";
+import { isReactGhost } from "../types.ts";
 import { expect, test } from "vitest";
 
 interface Props {
