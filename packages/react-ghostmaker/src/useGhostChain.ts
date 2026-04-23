@@ -15,6 +15,7 @@ import { queries } from "./queries.ts";
 import { ghostFnContext } from "./context.ts";
 import { invalidateGhosts } from "./invalidate.ts";
 import { hashObject } from "./hash.ts";
+import { resetGhosts } from "./reset.ts";
 
 export const useGhostChain = <T>(
   target: unknown,
@@ -36,9 +37,13 @@ export const useGhostChain = <T>(
   const invalidate = () =>
     invalidateGhosts(queryClient, queries.ghostChain(target, chain));
 
+  const reset = () =>
+    resetGhosts(queryClient, queries.ghostChain(target, chain));
+
   return {
     value,
     invalidate,
+    reset,
   };
 };
 

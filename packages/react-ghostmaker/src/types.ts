@@ -59,6 +59,7 @@ export type GhostChainTargetType =
 export type QueryKey = readonly unknown[];
 
 export type InvalidateGhostFn = () => Promise<void>;
+export type ResetGhostFn = () => Promise<void>;
 
 export interface GhostChainContext {
   queryKey: QueryKey;
@@ -67,6 +68,7 @@ export interface GhostChainContext {
 export interface UseGhostReturn<T> {
   value: T;
   invalidate: InvalidateGhostFn;
+  reset: ResetGhostFn;
 }
 
 export function isReactGhost<T>(
