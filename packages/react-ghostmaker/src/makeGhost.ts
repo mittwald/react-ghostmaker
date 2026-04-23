@@ -13,6 +13,7 @@ import { resolveGhostChain } from "./resolveGhostChain.ts";
 import { type QueryClient } from "@tanstack/react-query";
 import { invalidateGhosts } from "./invalidate.ts";
 import { queries } from "./queries.ts";
+import { resetGhosts } from "./reset.ts";
 
 type GhostMethodsWithoutPromise<T> = Omit<
   ReactGhostMethods<T>,
@@ -49,6 +50,9 @@ function buildGhostDeep<T>(target: T, ghostChain: GhostChain): ReactGhost<T> {
 
     invalidate: (queryClient: QueryClient) =>
       invalidateGhosts(queryClient, queries.ghostChain(target, ghostChain)),
+
+    reset: (queryClient: QueryClient) =>
+      resetGhosts(queryClient, queries.ghostChain(target, ghostChain)),
   };
 
   const ghost = new Proxy(proxyTarget, {

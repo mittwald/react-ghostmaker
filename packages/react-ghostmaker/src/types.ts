@@ -29,6 +29,7 @@ export interface ReactGhostMethods<T> extends Promise<T> {
     dependencies?: DependencyList,
   ) => ReactGhost<U2>;
   invalidate: (queryClient: QueryClient) => Promise<void>;
+  reset: (queryClient: QueryClient) => Promise<void>;
 }
 
 export const transformFnProp = "___transformFn" as const;
