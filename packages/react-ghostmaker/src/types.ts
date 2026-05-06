@@ -35,12 +35,14 @@ export interface ReactGhostMethods<T> extends Promise<T> {
 export const transformFnProp = "___transformFn" as const;
 export const isGhostMarker = "___ghostMarker" as const;
 
+type GhostProp<V, TOriginal> = V extends AnyFunction
+  ? (
+      ...args: Parameters<V>
+    ) => ReactGhost<Awaited<ReturnType<V>> | OrOptional<TOriginal>>
+  : ReactGhost<V | OrOptional<TOriginal>>;
+
 export type ReactGhost<T> = ReactGhostMethods<T> & {
-  [K in keyof NonNullable<T>]-?: NonNullable<T>[K] extends AnyFunction
-    ? <TParams extends Parameters<NonNullable<T>[K]>>(
-        ...args: TParams
-      ) => ReactGhost<Awaited<ReturnType<NonNullable<T>[K]>> | OrOptional<T>>
-    : ReactGhost<NonNullable<T>[K] | OrOptional<T>>;
+  [K in keyof NonNullable<T>]-?: GhostProp<NonNullable<T>[K], T>;
 };
 
 export interface GhostChainItem {

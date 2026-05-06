@@ -2,6 +2,8 @@ import { expectTypeOf, test } from "vitest";
 import type { Customer, ProjectDetailed } from "./testMocks.ts";
 import { ProjectGhost } from "./testMocks.ts";
 import type { ReactGhost } from "./types.ts";
+import type { MaybeReactGhost } from "./maybeGhost/types.ts";
+import { asGhost } from "./maybeGhost/asGhost.ts";
 
 test("return type is correct", () => {
   const customerNameGhost = ProjectGhost.ofId("Project A")
@@ -40,4 +42,22 @@ test("transform return type is correct", () => {
     .name.transform(() => 0);
 
   expectTypeOf(transformedToNumber).toEqualTypeOf<ReactGhost<number>>();
+});
+
+test("asGhost() works with generics", () => {
+  class A {
+    foo() {
+      //
+    }
+  }
+  class B {
+    foo() {
+      //
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function generic<T extends A & B>(prop: MaybeReactGhost<T>) {
+    asGhost(prop).foo().use();
+  }
 });
