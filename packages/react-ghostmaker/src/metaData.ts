@@ -10,11 +10,18 @@ interface GhostMakerModelMeta<T extends DecoratorTarget> {
 
 const store = new Map<unknown, GhostMakerModelMeta<DecoratorTarget>>();
 
+const isDev =
+  typeof process !== "undefined" && process.env.NODE_ENV !== "production";
+
 const testNameConflict = (name: string) => {
   if (Array.from(store.values()).some((meta) => meta.name === name)) {
-    throw new Error(
-      `GhostMakerModel name conflict: A model with the name "${name}" is already registered.`,
-    );
+    const message = `GhostMakerModel name conflict: A model with the name "${name}" is already registered.`;
+
+    if (isDev) {
+      console.warn(message);
+    } else {
+      throw new Error(message);
+    }
   }
 };
 

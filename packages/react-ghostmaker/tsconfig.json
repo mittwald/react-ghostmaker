@@ -18,7 +18,8 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "types": ["node"]
   },
   "exclude": ["test-d/**/*", "*.test.ts"],
   "include": ["src"]
