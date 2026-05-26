@@ -130,6 +130,7 @@ export class ProjectDetailed {
   public readonly id: string;
   public readonly name: string;
   public readonly customer: Customer;
+  public readonly optionalCustomer?: Customer;
 
   public constructor(id: string, name: string, customerId: string) {
     this.id = id;

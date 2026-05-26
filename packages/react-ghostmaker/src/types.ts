@@ -42,7 +42,10 @@ type GhostProp<V, TOriginal> = V extends AnyFunction
   : ReactGhost<V | OrOptional<TOriginal>>;
 
 export type ReactGhost<T> = ReactGhostMethods<T> & {
-  [K in keyof NonNullable<T>]-?: GhostProp<NonNullable<T>[K], T>;
+  [K in keyof NonNullable<T>]-?: Exclude<
+    GhostProp<NonNullable<T>[K], T>,
+    ReactGhost<undefined>
+  >;
 };
 
 export interface GhostChainItem {

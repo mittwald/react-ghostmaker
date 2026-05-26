@@ -61,3 +61,12 @@ test("asGhost() works with generics", () => {
     asGhost(prop).foo().use();
   }
 });
+
+test("calling function on optional props works", () => {
+  const customerNameGhost = ProjectGhost.ofId("Project A")
+    .getDetailed()
+    .optionalCustomer?.getDetailed()
+    .getName();
+
+  expectTypeOf(customerNameGhost).toEqualTypeOf<ReactGhost<string>>();
+});
