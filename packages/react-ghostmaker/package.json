@@ -27,6 +27,10 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.js"
     },
+    "./model": {
+      "types": "./dist/types/model.d.ts",
+      "import": "./dist/esm/model.js"
+    },
     "./polytype": {
       "types": "./dist/types/polytype.d.ts",
       "import": "./dist/esm/polytype.js"
@@ -90,7 +94,13 @@
     "react": ">=19.2"
   },
   "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    },
     "polytype": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     }
   }

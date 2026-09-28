@@ -497,6 +497,27 @@ class Blog {
 - Name and ID can be set explicitly (for readable query keys)
 - Works for multiple models and inheritance
 
+#### Framework-agnostic model code
+
+If your models live in code that must not depend on React (a shared model
+package, server-side or CLI code), import the decorator from the
+`@mittwald/react-ghostmaker/model` entry point instead of the main entry:
+
+```ts
+import { GhostMakerModel } from "@mittwald/react-ghostmaker/model";
+```
+
+This entry point only contains what is needed to describe models —
+`GhostMakerModel`, `ghostMakerModel`, `getModelName`, `getModelId` and the
+`GhostMakerModelMeta` and `DynamicModel` types — and imports neither React nor
+TanStack Query, not even for its type declarations. `react` and
+`@tanstack/react-query` are therefore optional peer dependencies: you only need
+them where you import from the main entry (`@mittwald/react-ghostmaker`), i.e.
+where you actually create and use ghosts.
+
+Both entry points share the same model registry, so models decorated via
+`/model` are recognized by ghosts created via the main entry.
+
 #### Alternative: `registerModelIdentifier` (deprecated)
 
 The previous `registerModelIdentifier` function is still available but marked as deprecated. It can be used to centrally register IDs for models:
@@ -860,6 +881,9 @@ Creates a ghost proxy from any object or class instance.
 - React >=19.2
 - TanStack Query ^5
 - TypeScript (recommended)
+
+React and TanStack Query are only required for the main entry point, not for
+[`@mittwald/react-ghostmaker/model`](#framework-agnostic-model-code).
 
 ## 📄 License
 

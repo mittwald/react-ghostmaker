@@ -3,7 +3,7 @@ import type { AbstractClass, Class } from "type-fest";
 
 type DecoratorTarget = Class<unknown> | AbstractClass<unknown>;
 
-interface GhostMakerModelMeta<T extends DecoratorTarget> {
+export interface GhostMakerModelMeta<T extends DecoratorTarget> {
   getId?: (instance: InstanceType<T>) => string;
   name?: string;
 }
@@ -36,7 +36,7 @@ export function GhostMakerModel<T extends DecoratorTarget>(
   };
 }
 
-type DynamicModel = (
+export type DynamicModel = (
   something: unknown,
 ) => GhostMakerModelMeta<DecoratorTarget> | void | undefined;
 
@@ -64,6 +64,19 @@ export const getMetaData = (
     getMetaDataRecursive(something, undefined, getClass(something)) ??
     getDynamicMetaData(something)
   );
+};
+
+export const getModelName = (something: unknown) => {
+  return getMetaData(something)?.name;
+};
+
+export const getModelId = (something: unknown): string | undefined => {
+  if (is.object(something)) {
+    const getId = getMetaData(something)?.getId;
+    if (getId) {
+      return getId(something);
+    }
+  }
 };
 
 const getMetaDataRecursive = (
