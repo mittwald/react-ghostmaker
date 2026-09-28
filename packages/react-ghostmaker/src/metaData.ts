@@ -61,7 +61,7 @@ export const getMetaData = (
   something: unknown,
 ): GhostMakerModelMeta<DecoratorTarget> | undefined => {
   return (
-    getMetaDataRecursive(something, undefined, getClass(something)) ??
+    getMetaDataRecursive(getClass(something), undefined) ??
     getDynamicMetaData(something)
   );
 };
@@ -79,35 +79,33 @@ export const getModelId = (something: unknown): string | undefined => {
   }
 };
 
+const isCompleteMetaData = (
+  meta: GhostMakerModelMeta<DecoratorTarget> | undefined,
+) => !!meta && "getId" in meta && "name" in meta;
+
+/**
+ * Collects meta data depth-first along the prototype chain(s). Meta data of the
+ * class itself wins over its parents, earlier parents (including their
+ * ancestors) win over later ones.
+ */
 const getMetaDataRecursive = (
-  something: unknown,
-  collectedMeta?: Partial<GhostMakerModelMeta<DecoratorTarget>>,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  klass?: Function,
+  klass: unknown,
+  collectedMeta: GhostMakerModelMeta<DecoratorTarget> | undefined,
 ): GhostMakerModelMeta<DecoratorTarget> | undefined => {
-  const currentClass = getClass(something);
+  if (isCompleteMetaData(collectedMeta) || is.nullOrUndefined(klass)) {
+    return collectedMeta;
+  }
 
-  const meta = store.get(klass ?? currentClass);
+  const meta = store.get(klass);
 
-  const mergedMeta =
+  let mergedMeta =
     meta || collectedMeta ? { ...meta, ...collectedMeta } : undefined;
 
-  if (mergedMeta && "getId" in mergedMeta && "name" in mergedMeta) {
-    return mergedMeta;
+  for (const proto of getProtoypes.current(klass)) {
+    mergedMeta = getMetaDataRecursive(proto, mergedMeta);
   }
 
-  if (!klass) {
-    return mergedMeta;
-  }
-
-  const prototypes = getProtoypes.current(klass);
-
-  for (const proto of prototypes) {
-    const result = getMetaDataRecursive(something, mergedMeta, proto);
-    if (result) {
-      return result;
-    }
-  }
+  return mergedMeta;
 };
 
 function isClass(value: unknown): value is Class<unknown> {
