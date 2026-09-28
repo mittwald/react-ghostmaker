@@ -1,4 +1,5 @@
-import { asGhostProps } from "../maybeGhost/index.ts";
+import { asGhost, asGhostProps } from "../maybeGhost/index.ts";
+import { makeGhost } from "../makeGhost.ts";
 import { isReactGhost } from "../types.ts";
 import { expect, test } from "vitest";
 
@@ -56,4 +57,28 @@ test("does not make Ghosts of excluded props", () => {
   expect(ghostProps.firstGhost).toSatisfy(isReactGhost);
   expect(ghostProps.secondGhost).not.toSatisfy(isReactGhost);
   expect(ghostProps.thirdGhost).not.toSatisfy(isReactGhost);
+});
+
+test("asGhost() returns ghosts as they are", () => {
+  const ghost = makeGhost({ value: "hello" });
+
+  expect(asGhost(ghost)).toBe(ghost);
+});
+
+test("asGhost() makes a ghost of values", async () => {
+  const ghost = asGhost({ value: "hello" });
+
+  expect(ghost).toSatisfy(isReactGhost);
+  expect(await ghost.value).toBe("hello");
+});
+
+test("asGhostProps() keeps ghost props as they are", () => {
+  const ghost = makeGhost("hello");
+
+  const ghostProps = asGhostProps<Props>({
+    first: ghost as unknown as string,
+    third: "!",
+  });
+
+  expect(ghostProps.firstGhost).toBe(ghost);
 });
