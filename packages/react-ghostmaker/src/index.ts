@@ -1,4 +1,5 @@
 export { makeGhost } from "./makeGhost.ts";
+export { optionalGhost } from "./optionalGhost.ts";
 export { registerModelIdentifier } from "./modelIdentifier.ts";
 export { type ReactGhost, UseGhostReturn } from "./types.ts";
 export { getQueryContext, forwardQueryContext } from "./context.ts";
