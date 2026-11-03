@@ -16,6 +16,7 @@ making your code cleaner and more declarative.
 - [🔄 Error Handling & Loading States](#-error-handling--loading-states)
 - [🏗️ Working with Domain Models](#️-working-with-domain-models)
 - [🎭 Flexible Component Props with MaybeReactGhost](#-flexible-component-props-with-maybereactghost)
+- [🫥 Optional Ghosts](#-optional-ghosts)
 - [🔧 Cache Management](#-cache-management)
 - [📚 Complete Example](#-complete-example)
 - [🔍 API Reference](#-api-reference)
@@ -633,6 +634,41 @@ Don't use it when:
 - You always know the data will be resolved (use the plain type `T`)
 - Simple components that don't need this flexibility
 
+## 🫥 Optional Ghosts
+
+`.use()` is a React hook, so it must be called on every render. Optional
+chaining like `projectGhost?.use()` skips the call while the ghost is missing.
+If the ghost is set on a later render, React fails with "Rendered more hooks
+than during the previous render."
+
+Wrap optional ghosts with `optionalGhost()` instead. It always calls the hook
+and resolves to `undefined` as long as no ghost is given:
+
+```tsx
+import { optionalGhost, type ReactGhost } from "@mittwald/react-ghostmaker";
+
+function ProjectInfo(props: { projectGhost?: ReactGhost<Project> }) {
+  // ❌ skips the hook while projectGhost is undefined
+  // const project = props.projectGhost?.use();
+
+  // ✅ always calls the same hooks
+  const project = optionalGhost(props.projectGhost).use();
+
+  return <span>{project?.name ?? "No project"}</span>;
+}
+```
+
+This also works with `asGhostProps()`, which leaves missing props `undefined`:
+
+```tsx
+const { projectGhost } = asGhostProps(props, ["project"]);
+const project = optionalGhost(projectGhost).use();
+```
+
+`.use()` calls the same hooks for every ghost: regardless of the length of its
+chain, an empty target or an `undefined` result within the chain. A component
+can therefore receive a different ghost on the next render.
+
 ## 🔧 Cache Management
 
 ### Invalidate Queries
@@ -866,6 +902,8 @@ Creates a ghost proxy from any object or class instance.
 ### Utility Functions
 
 - **`asGhostProps(props)`** - Converts props to ghost-compatible format
+- **`optionalGhost(ghost)`** - Returns a ghost that resolves to `undefined` if
+  `ghost` is missing; use it instead of `ghost?.use()`
 - **`GhostMakerModel(options)`** - Decorator to define model name and ID for automatic query key generation
 - **`invalidateGhostsById(id)`** - Globally invalidate cached data by ID
 - **`getGhostId(ghost)`** - Get the unique ID of a ghost
