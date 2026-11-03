@@ -15,7 +15,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { invalidateGhosts } from "./invalidate.ts";
 import { makeGhost } from "./makeGhost.ts";
 import { cleanupTargetHashes } from "./useGhostChain.ts";
-import { Component, Suspense, type ReactNode } from "react";
+import type { ReactGhost } from "./types.ts";
+import { Component, Suspense, useState, type ReactNode } from "react";
 
 class FailingService {
   public async fail(): Promise<string> {
@@ -401,6 +402,72 @@ describe("Hooks", () => {
     test("ghost.render() is lazy", () => {
       ProjectGhost.ofId("Project A").getDetailed().name.render();
       expect(projectMocks.getDetailed).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Hook order", () => {
+    const settle = async () => {
+      for (let i = 0; i < 3; i++) {
+        await act(() => vitest.runOnlyPendingTimersAsync());
+      }
+    };
+
+    test("stays the same when the target becomes available", async () => {
+      let project: Project | undefined;
+
+      const { result, rerender } = await renderHookWithSuspense(() => {
+        useState();
+        return makeGhost(project).getDetailed().name.use();
+      });
+      expect(result.current).toBeUndefined();
+
+      project = new Project("Project A");
+      rerender();
+      await settle();
+      expect(result.current).toBe("Project Project A");
+
+      project = undefined;
+      rerender();
+      expect(result.current).toBeUndefined();
+    });
+
+    test("stays the same when a ghost with a different chain is used", async () => {
+      let projectGhost: ReactGhost<ProjectDetailed> = makeGhost(
+        new ProjectDetailed("Project A", "Plain project", "C1"),
+      );
+
+      const { result, rerender } = await renderHookWithSuspense(() => {
+        useState();
+        return projectGhost.name.use();
+      });
+      expect(result.current).toBe("Plain project");
+
+      projectGhost = ProjectGhost.ofId("Project A").getDetailed();
+      rerender();
+      await settle();
+      expect(result.current).toBe("Project Project A");
+    });
+
+    test("stays the same when an undefined result in the chain becomes available", async () => {
+      const ghost = ProjectGhost.ofId("Project A")
+        .findDetailed()
+        .customer.getDetailed()
+        .getName();
+
+      const { result } = await renderHookWithSuspense(() => {
+        useState();
+        return ghost.use();
+      });
+      expect(result.current).toBeUndefined();
+
+      projectMocks.findDetailed = vitest
+        .fn()
+        .mockImplementation(
+          (id) => new ProjectDetailed(id, `Project ${id}`, "C1"),
+        );
+      ghost.invalidate(queryClient);
+      await settle();
+      expect(result.current).toBe("Customer C1");
     });
   });
 
