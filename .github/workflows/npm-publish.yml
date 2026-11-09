@@ -18,7 +18,7 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
       - run: pnpm i
       - run: pnpm --filter ./packages/** test
       - run: pnpm --filter ./packages/** build
